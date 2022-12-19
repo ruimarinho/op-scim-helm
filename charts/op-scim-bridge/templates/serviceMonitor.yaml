@@ -2,21 +2,21 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ tpl .Values.scim.name . }}
+  name:{{ template "common.names.fullname" . }}
   {{- if .Values.scim.serviceMonitor.namespace }}
   namespace: {{ .Values.scim.serviceAccount.namespace }}
   {{- else }}
   namespace: {{ .Release.Namespace }}
   {{- end }}
   labels:
-    app.kubernetes.io/component: {{ tpl .Values.scim.name . }}
+    app.kubernetes.io/component:{{ template "common.names.fullname" . }}
     {{- with .Values.scim.labels }}
       {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/component: {{ tpl .Values.scim.name . }}
+      app.kubernetes.io/component:{{ template "common.names.fullname" . }}
   namespaceSelector:
     matchNames:
     - {{ .Release.Namespace }}

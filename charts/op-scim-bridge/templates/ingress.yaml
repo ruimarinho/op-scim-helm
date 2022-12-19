@@ -1,5 +1,5 @@
 {{- if .Values.scim.ingress.enabled -}}
-{{- $name := tpl .Values.scim.name . -}}
+{{- $name := include "common.names.fullname" . -}}
 {{- if and .Values.scim.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.scim.ingress.annotations "kubernetes.io/ingress.class") }}
   {{- $_ := set .Values.scim.ingress.annotations "kubernetes.io/ingress.class" .Values.scim.ingress.className}}
@@ -52,11 +52,11 @@ spec:
             backend:
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
-                name: "{{$name}}-svc"
+                name: "{{$name}}"
                 port:
                   number: 80
               {{- else }}
-              serviceName: "{{$name}}-svc"
+              serviceName: "{{$name}}"
               servicePort: 80
               {{- end }}
           {{- end }}

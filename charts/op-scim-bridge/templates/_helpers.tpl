@@ -2,7 +2,7 @@
 Expand the name of the chart.
 */}}
 {{- define "op-scim-bridge.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- default .Chart.Name .Values.scim.name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 
@@ -54,3 +54,22 @@ https://{{- tpl .Values.scim.name . -}}-svc
 http://{{- tpl .Values.scim.name . -}}-svc
 {{- end -}}
 {{- end -}}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "op-scim-bridge.serviceAccountName" -}}
+{{- if .Values.scim.serviceAccount.create }}
+{{- default (include "op-scim-bridge.name" .) .Values.scim.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.scim.serviceAccount.name }}
+{{- end }}
+{{- end }}
+
+
+{{/*
+Create the name of the secret to use
+*/}}
+{{- define "op-scim-bridge.secretName" -}}
+{{- default (printf "%s-%s" (include "common.names.fullname" .) "credentials") .Values.scim.credentials.secrets.name -}}
+{{- end }}

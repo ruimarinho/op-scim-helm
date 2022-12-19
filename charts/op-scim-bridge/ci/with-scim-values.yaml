@@ -16,5 +16,7 @@ scim:
   probes:
     liveness:
       enabled: false
+  autoscaling:
+    enabled: true
   config:
     redisURL: "redis://{{ .Release.Namespace }}-redis-master:6379"

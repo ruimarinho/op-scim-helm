@@ -2,10 +2,10 @@
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ tpl .Values.scim.name . }}
+  name: {{ template "common.names.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/component: {{ tpl .Values.scim.name . }}
+    app.kubernetes.io/component: {{ template "common.names.fullname" . }}
     {{- with .Values.scim.labels }}
       {{- toYaml . | nindent 4 }}
     {{- end }}
@@ -13,5 +13,5 @@ spec:
   minAvailable: {{ .Values.scim.podDisruptionBudget.minAvailable }}
   selector:
     matchLabels:
-      app: {{ tpl .Values.scim.name . }}
+      app: {{ template "common.names.fullname" . }}
 {{- end }}
